@@ -123,7 +123,7 @@ public class TrybeGamesController
     // 1. Crie a funcionalidde para adicionar uma nova pessoa jogadora ao banco de dados
     public void AddPlayer()
     {
-        Console.WriteLine("Digite o nome:");
+        Console.WriteLine("Digite o nome do jogador:");
         var name = Console.ReadLine();
         Player newPlayer = new() { Id = database.Players.Count + 1, Name = name };
         database.Players.Add(newPlayer);
@@ -142,8 +142,29 @@ public class TrybeGamesController
     // 3. Crie a funcionalidade de adicionar novo Jogo ao Banco de dados
     public void AddGame()
     {
-        // implementar
-        Console.WriteLine("Ainda não é possível realizar essa funcionalidade!");
+        Console.WriteLine("Digite o nome do jogo:");
+        var game = Console.ReadLine();
+        Console.WriteLine("Digite a data de lançamento:");
+        var releaseDateInput = Console.ReadLine();
+        if (DateTime.TryParseExact(releaseDateInput, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime releaseDate))
+        {
+            Console.WriteLine("Digite o tipo de jogo: Action, Adventure, Puzzle, Strategy, Simulation, Sports, Other");
+            var gameTypeInput = Console.ReadLine();
+            if (Enum.TryParse(gameTypeInput, out TrybeGames.GameType gameType))
+            {
+
+                Game newGame = new() { Id = database.Games.Count + 1, Name = game, ReleaseDate = releaseDate, GameType = gameType };
+                database.Games.Add(newGame);
+            }
+            else
+            {
+                Console.WriteLine("Tipo de jogo inválido");
+            }
+        }
+        else
+        {
+            Console.Write("Data inválida!");
+        }
     }
 
     public void ChangeGameStudio(Game game)
